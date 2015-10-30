@@ -7,7 +7,6 @@ function updateSoftware(version, trs) {
         tds[3].innerHTML = parseFloat(usages[2]).toFixed(0);
         tds[4].innerHTML = parseFloat(usages[3]).toFixed(0);
         tds[5].innerHTML = parseFloat(usages[0]).toFixed(0);
-        // RG Test
     }
 }
 function removeComma(str) {
