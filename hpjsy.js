@@ -1,5 +1,5 @@
 function updateSoftware(version, trs) {
-    for (var i = 3; i < trs.length-1; i++) {
+    for (var i = 2; i < trs.length-1; i++) {
         var tds = trs[i].getElementsByTagName("td");
         var filename = tds[0].innerHTML;
         var usages = getUsages(filename, version);
