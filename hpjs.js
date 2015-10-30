@@ -3,10 +3,10 @@ function updateSoftware(version, trs) {
         var tds = trs[i].getElementsByTagName("td");
         var filename = tds[0].innerHTML;
         var usages = getUsages(filename, version);
-        tds[2].innerHTML = usages[1];
-        tds[3].innerHTML = usages[2];
+        tds[2].innerHTML = parseFloat(usages[1]).toFixed(0);
+        tds[3].innerHTML = parseFloat(usages[2]).toFixed(0);
         tds[4].innerHTML = parseFloat(usages[3]).toFixed(0);
-        tds[5].innerHTML = usages[0];
+        tds[5].innerHTML = parseFloat(usages[0]).toFixed(0);
     }
 }
 function removeComma(str) {
