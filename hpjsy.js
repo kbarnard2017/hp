@@ -191,3 +191,6 @@ function removeDTA() {
         }
     }
 }
+function postload() {
+    // Postload processing in scope of document
+}
