@@ -9,59 +9,6 @@ function updateSoftware(version, trs) {
         tds[5].innerHTML = parseFloat(usages[0]).toFixed(0);
     }
 }
-function removeComma(str) {
-    while (str.indexOf(",") > -1) {
-        var index = str.indexOf(",");
-        var first = str.substring(0, index);
-        var last = str.substring(index + 1, str.length);
-        str = first + last;
-    }
-    return str;
-}
-function addProcs() {
-    var toAdd = [];
-    var parent = document;
-    recurAdd(parent, toAdd);
-}
-function recurAdd(parent, toAdd) {
-    var nextButton;
-    var as = parent.getElementsByTagName("a");
-    for (var i = 0; i < as.length; i++) if (as[i].childNodes[0].nodeValue == "Next") nextButton = as[i];
-    var nBHref = nextButton.href;
-    var table = parent.getElementsByName("frm_files")[0].getElementsByTagName("table")[0];
-    var numProcs = 0;
-    for (var numberOfRows = table.rows.length, i = 3; i<numberOfRows-2; i++) {
-        if (parent != document) toAdd.push(table.getElementsByTagName("tr")[i]);
-        numProcs++;
-    }
-    if (numProcs > 0) {
-        var nextFrame = parent.createElement("iframe");
-        nextFrame.src = nBHref+"&disable=1";
-        nextFrame.style.display="none";
-        nextFrame.onload = function() {
-            recurAdd(nextFrame.contentWindow.document, toAdd);
-        };
-        parent.body.appendChild(nextFrame);
-    }
-    else {
-        for (var i = 0; i < toAdd.length; i++) {
-            var newNode = document.importNode(toAdd[i], true);
-            var table = document.getElementsByName("frm_files")[0].getElementsByTagName("table")[0];
-            var trs = table.getElementsByTagName("tr");
-            var beforeNode;
-            for (var l = 0; l < trs.length; l++) if (trs[l].innerHTML.indexOf("Tasks")>-1) beforeNode = trs[l];
-            table.getElementsByTagName("tbody")[0].insertBefore(newNode, beforeNode);
-        }
-    }
-}
-function calcCost(gold) {
-    var nr_hours = document.getElementsByName("nr_hours")[0], x_times = document.getElementsByName("x_times")[0], targ = document.getElementById("targ");
-    var hours = nr_hours.value;
-    var times = x_times.value;
-    var mult = 100;
-    if (gold) mult = 80;
-    targ.innerHTML = "Estimated cost: "+hours*times*mult+" HPD";
-}
 function getUsages(filename, version) {
     var hd = 0, cpu = 0, mem = 0, band = 0;
     switch (filename) {
@@ -109,87 +56,13 @@ function getUsages(filename, version) {
         case "MutantR Acc Stopper":{  hd = 174.21;  mem = 46000;  cpu = 1200;  band = 0; break; }
         case "MutantR Dec Stopper":{  hd = 174.21;  mem = 46000;  cpu = 1200;  band = 0; break; }
     }
-    hd *= version/0.1;
+    hd *= version/0.1*1024000;
     mem *= version/0.1;
     cpu *= version/0.1;
     band *= version/0.1;
     band = band.toFixed(2);
     var usages = [hd, cpu, mem, band];
     return usages;
-}
-function removeDTA() {
-    var as = document.getElementsByTagName("a");
-    var spls = [];
-    for (var i = 0; i < as.length; i++) if (as[i].getAttribute("href").indexOf("action=support")>-1 || as[i].getAttribute("href").indexOf("affiliate")>-1) spls.push(as[i]);
-    var cont = spls.length==3;
-    if (cont) {
-        spls[2].parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.removeChild(spls[2].parentNode.parentNode.parentNode.parentNode.parentNode.parentNode);
-        var fs = document.getElementsByTagName("fieldset")[0];
-        if (new String(document.location.href).indexOf("?action=gate")>-1) {
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-        }
-        if (new String(document.location.href).indexOf("?action=ip_db")>-1) {
-            fs.removeChild(fs.childNodes[2]);
-        }
-        if (new String(document.location.href).indexOf("?action=manage_tr")>-1) {
-            fs.removeChild(fs.childNodes[2]);
-        }
-        if (new String(document.location.href).indexOf("?action=ability")>-1) {
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-        }
-        if (new String(document.location.href).indexOf("?action=software")>-1) {
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-        }
-        if (new String(document.location.href).indexOf("?action=hardware")>-1) {
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-        }
-        if (new String(document.location.href).indexOf("&action=pvp_board")>-1) {
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-        }
-        if (new String(document.location.href).indexOf("?action=messages")>-1) {
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-        }
-        if (new String(document.location.href).indexOf("?action=finances")>-1) {
-            fs.removeChild(fs.childNodes[2]);
-        }
-        if (new String(document.location.href).indexOf("?action=research")>-1) {
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-        }
-        if (new String(document.location.href).indexOf("?action=stock_market")>-1) {
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-        }
-        if (new String(document.location.href).indexOf("?action=mission")>-1) {
-            fs.removeChild(fs.childNodes[2]);
-        }
-        if (new String(document.location.href).indexOf("?action=faction")>-1) {
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-            fs.removeChild(fs.childNodes[2]);
-        }
-        if (new String(document.location.href).indexOf("?action=friend_list")>-1) {
-            fs.removeChild(fs.childNodes[2]);
-        }
-    }
 }
 function postload() {
     // Postload processing in scope of document
